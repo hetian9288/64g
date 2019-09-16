@@ -14,8 +14,168 @@
   </script -->
   <Button onclick="ja()">js传值给Java</Button>
   <script>
+    var EventTarget = function EventTarget() {
+    this.handlers = {};
+}
+
+EventTarget.prototype = {
+    //订阅消息
+    addHandler : function(type, handler) {
+        if (typeof this.handlers[type] == "undefined") {
+            this.handlers[type] = [];
+        }
+        
+        this.handlers[type].push(handler);
+    },
+    
+    //发布消息
+    fire : function(event) {
+        if (!event.target) {
+            event.target = this;
+        }
+        if (this.handlers[event.type] instanceof Array) {
+            var handlers = this.handlers[event.type];
+            for (var i = 0, len = handlers.length; i < len; i++) {
+                handlers[i](event);
+            }
+            if (event.isOne) {
+                this.removeAllHandler(event.type);
+            }
+        }
+    },
+    
+    //取消订阅
+    removeHandler : function(type, handler) {
+        if (this.handlers[type] instanceof Array) {
+            var handlers = this.handlers[type];
+            for (var i = 0, len = handlers.length; i < len; i++) {
+                if (handlers[i] === handler) {
+                    break;
+                }
+            }
+            handlers.splice(i, 1);
+        }
+    },
+    // 取消所有订阅
+    removeAllHandler: function(type) {
+        delete this.handlers[type];
+    }
+};
+var jyQuery = function () {
+    this.isAndroid = false;
+    this.isIOS = false;
+    this.params = {};
+
+    // ResponseType 返回格式 【plain 返回源码文本】
+    this.ResponseType = {"json": 0, "plain": 2};
+}
+jyQuery.prototype = {
+    // 初始化 原生端触发：userJyQuery.__init__("android", {});
+    __init__: function (platform, params) {
+        if (platform == "ios") {
+            this.isIOS = true;
+            this.isAndroid = false;
+        } else if (platform == "android") {
+            this.isAndroid = true;
+            this.isIOS = false;
+        } else {
+            this.isIOS = false;
+            this.isAndroid = false;
+        }
+        this.params = params;
+        this.onload();
+        this.events = new EventTarget();
+    },
+    // 接收原生端消息 原生端触发：userJyQuery.__event__(event);
+    __event__: function(data) {
+        this.event.fire(data);
+    },
+    pushToNative: function (action, data) {
+        if (this.isIOS) {
+            var url = "jyObj://" + action + "?" + data;
+            window.location.href = url;
+        } else {
+            jyObj.manager(action, data);
+        }
+    },
+    // options = {
+    //     method: "post/get",
+    //     connectTimeout: 5000,
+    //     receiveTimeout: 5000,
+    //     headers: {
+    //         "token": "dasdasdas"
+    //     },
+    //     responseType: this.ResponseType["json"],
+    //     contentType: "text/html; charset=utf-8",
+    //     followRedirects: false,
+    //     maxRedirects: 10,
+    // }
+    // onSuccess function(data){}
+    // onError function(code, msg) {}
+
+    // ajax 原生端 返回数据
+    // {
+    //      "type": "uuid", // 这里是发送请求时的UUID
+    //      "code": 200,
+    //      "data": '<a></a>',
+    //      "msg": "错误信息"
+    // }
+    ajax: function (url, method, data, options, onSuccess, onError) {
+        var uuid = this.uuid();
+        this.pushToNative("ajax", JSON.stringify({
+            uuid: uuid,
+            url: url,
+            method: method,
+            data: data,
+            options: options == null ? {} : options,
+        }));
+        this.event.addHandler(uuid, function(event){
+            if (event.code == 200) {
+                onSuccess(event.data);
+            } else {
+                onError(event.code, event.msg);
+            }
+        });
+    },
+    ajaxName: function (apiName, method, data, options, v, onSuccess, onError) {
+        var uuid = this.uuid();
+        this.pushToNative("ajaxName", JSON.stringify({
+            uuid: uuid,
+            apiName: apiName,
+            method: method,
+            data: data,
+            version: v == null ? "2.0": v,
+            options: options == null ? {} : options,
+        }));
+        this.event.addHandler(uuid, function(event){
+            if (event.code == 200) {
+                onSuccess(event.data);
+            } else {
+                onError(event.code, event.msg);
+            }
+        });
+    },
+    // callback function(rest){};
+    publicAction: function(action, params, callback) {
+        var uuid = this.uuid();
+        this.pushToNative(action, JSON.stringify(Object.assign({
+            uuid: uuid
+        }, params)));
+        this.event.addHandler(uuid, callback == null ? function(v){} : callback);
+    },
+    onload: function () { },
+    uuid: function() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+}
+
+userJyQuery = new jyQuery();
   function ja(){
-    jyObj.manager("nihao");
+    userJyQuery.publicAction("alert", {title: "nihao", message: "haod"})
   }
   </script>
 </body>
