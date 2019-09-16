@@ -188,9 +188,18 @@ jyQuery.prototype = {
 
 userJyQuery = new jyQuery();
   function ja(){
-    userJyQuery.publicAction("alert", {title: "nihao", message: "haod"}, function(event){
-      alert(event.data)
-    })
+    userJyQuery.ajax(
+        "https://hetian9288.github.io/64g/d.html", 
+        "get", 
+        {"id": 12}, 
+        {responseType: userJyQuery.ResponseType["plain"]}, 
+        function(data){
+            alert(data);
+        }, 
+        function(code, err){
+            alert(code + "-" + err);
+        }
+    )
   }
   </script>
 </body>
