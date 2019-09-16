@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>JS Bin</title>
+  <script src="cdn.jsdelivr.net/npm/fingerprintjs2@<VERSION>/dist/fingerprint2.min.js"></script>
 </head>
 <body>
   <a href="https://p.pinduoduo.com/1ETXW09c">https://p.pinduoduo.com/1ETXW09c</a>
@@ -14,7 +15,21 @@
   </script -->
   <Button onclick="ja()">js传值给Java</Button>
   <script>
-    var EventTarget = function EventTarget() {
+    if (window.requestIdleCallback) {
+    requestIdleCallback(function () {
+        Fingerprint2.get(function (components) {
+          alert(components) // an array of components: {key: ..., value: ...}
+        })
+    })
+} else {
+    setTimeout(function () {
+        Fingerprint2.get(function (components) {
+          alert(components) // an array of components: {key: ..., value: ...}
+        })  
+    }, 500)
+}
+
+var EventTarget = function EventTarget() {
     this.handlers = {};
 }
 
