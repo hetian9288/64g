@@ -97,15 +97,9 @@ jyQuery.prototype = {
             return ;
         }
         if (this.isIOS) {
-            if (typeof data == "object") {
-                data = encodeURIComponent(JSON.stringify(data));
-            }
-            var url = "jyObj://" + action + "?" + data;
-            window.location.href = url;
+            __jsObj__(action, JSON.stringify(data));
         } else {
-            if (typeof data == "object") {
-                jyObj.manager(action, JSON.stringify(data));
-            }
+            jyObj.manager(action, JSON.stringify(data));
         }
     },
     // options = {
