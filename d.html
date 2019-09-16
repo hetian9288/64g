@@ -85,6 +85,7 @@ jyQuery.prototype = {
         this.params = params;
         this.onload();
         this.events = new EventTarget();
+      alert("init");
     },
     // 接收原生端消息 原生端触发：userJyQuery.__event__(event);
     __event__: function(data) {
