@@ -18,13 +18,17 @@
     if (window.requestIdleCallback) {
     requestIdleCallback(function () {
         Fingerprint2.get(function (components) {
-          alert(components) // an array of components: {key: ..., value: ...}
+          var values = components.map(function (component) { return component.value })
+   var murmur = Fingerprint2.x64hash128(values.join(''), 31)
+   alert(murmur)
         })
     })
 } else {
     setTimeout(function () {
         Fingerprint2.get(function (components) {
-          alert(components) // an array of components: {key: ..., value: ...}
+          var values = components.map(function (component) { return component.value })
+   var murmur = Fingerprint2.x64hash128(values.join(''), 31)
+   alert(murmur)
         })  
     }, 500)
 }
