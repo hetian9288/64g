@@ -136,13 +136,13 @@ jyQuery.prototype = {
             return ;
         }
         var uuid = this.uuid();
-        this.pushToNative("ajax", JSON.stringify({
+        this.pushToNative("ajax", {
             uuid: uuid,
             url: url,
             method: method,
             data: data,
             options: options == null ? {} : options,
-        }));
+        });
         this.events.addHandler(uuid, function(event){
             if (event.code == 200) {
                 onSuccess(event.data);
@@ -177,9 +177,9 @@ jyQuery.prototype = {
             return ;
         }
         var uuid = this.uuid();
-        this.pushToNative(action, JSON.stringify(Object.assign({
+        this.pushToNative(action, Object.assign({
             uuid: uuid
-        }, params)));
+        }, params));
         this.events.addHandler(uuid, callback == null ? function(v){} : callback);
     },
     onload: function () { },
