@@ -155,7 +155,7 @@ jyQuery.prototype = {
             }
         });
     },
-    // callback function(rest){};
+    // callback function(event){};
     publicAction: function(action, params, callback) {
         var uuid = this.uuid();
         this.pushToNative(action, JSON.stringify(Object.assign({
@@ -175,7 +175,9 @@ jyQuery.prototype = {
 
 userJyQuery = new jyQuery();
   function ja(){
-    userJyQuery.publicAction("alert", {title: "nihao", message: "haod"})
+    userJyQuery.publicAction("alert", {title: "nihao", message: "haod"}, function(e){
+      alert(event.data)
+    })
   }
   </script>
 </body>
