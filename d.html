@@ -125,10 +125,6 @@ jyQuery.prototype = {
     //      "msg": "错误信息"
     // }
     ajax: function (url, method, data, options, onSuccess, onError) {
-        if (typeof params != "object") {
-            console.error("params 值必须是 Object");
-            return ;
-        }
         var uuid = this.uuid();
         this.pushToNative("ajax", {
             uuid: uuid,
