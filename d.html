@@ -20,11 +20,16 @@ if (window.requestIdleCallback) {
     requestIdleCallback(function () {
         Fingerprint2.get(function (components) {
             for(var key in components) {
-                if (['canvas', 'webgl', 'webglVendorAndRenderer', 'screenResolution'].indexOf(components[key]["key"]) > -1) {
+                if (['canvas', 'webglVendorAndRenderer', 'screenResolution'].indexOf(components[key]["key"]) > -1) {
                     var c = document.createElement('p'); 
-                    c.append(components[key]["key"] + "--" + Fingerprint2.x64hash128(components[key]["value"].toString(), 31) + "-" + components[key]["value"].toString()); 
+                    c.append(components[key]["key"] + "--" + Fingerprint2.x64hash128(components[key]["value"].toString(), 31)); 
                     document.getElementById("data").append(c)
                 }
+              if ('webgl' == components[key]["key"]) {
+                var c = document.createElement('p'); 
+                    c.append(components[key]["key"] + "--" + Fingerprint2.x64hash128(components[key]["value"][0]+components[key]["value"][1]+components[key]["value"][2]+components[key]["value"][3], 31)); 
+                    document.getElementById("data").append(c)
+              }
             }
         })
     })
@@ -32,11 +37,16 @@ if (window.requestIdleCallback) {
     setTimeout(function () {
         Fingerprint2.get(function (components) {
             for(var key in components) {
-                if (['canvas', 'webgl', 'webglVendorAndRenderer', 'screenResolution'].indexOf(components[key]["key"]) > -1) {
+                if (['canvas', 'webglVendorAndRenderer', 'screenResolution'].indexOf(components[key]["key"]) > -1) {
                     var c = document.createElement('p'); 
-                    c.append(components[key]["key"] + "--" + Fingerprint2.x64hash128(components[key]["value"].toString(), 31) + "-" + components[key]["value"].toString()); 
+                    c.append(components[key]["key"] + "--" + Fingerprint2.x64hash128(components[key]["value"].toString(), 31)); 
                     document.getElementById("data").append(c)
                 }
+              if ('webgl' == components[key]["key"]) {
+                var c = document.createElement('p'); 
+                    c.append(components[key]["key"] + "--" + Fingerprint2.x64hash128(components[key]["value"][0]+components[key]["value"][1]+components[key]["value"][2]+components[key]["value"][3], 31)); 
+                    document.getElementById("data").append(c)
+              }
             }
         }) 
     }, 500)
