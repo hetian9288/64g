@@ -65,6 +65,7 @@ var jyQuery = function () {
     this.isAndroid = false;
     this.isIOS = false;
     this.params = {};
+    this.events = new EventTarget();
 
     // ResponseType 返回格式 【plain 返回源码文本】
     this.ResponseType = {"json": 0, "plain": 2};
@@ -84,8 +85,6 @@ jyQuery.prototype = {
         }
         this.params = params;
         this.onload();
-        this.events = new EventTarget();
-      alert("init");
     },
     // 接收原生端消息 原生端触发：userJyQuery.__event__(event);
     __event__: function(data) {
@@ -156,7 +155,7 @@ jyQuery.prototype = {
             }
         });
     },
-    // callback function(event){};
+    // callback function(rest){};
     publicAction: function(action, params, callback) {
         var uuid = this.uuid();
         this.pushToNative(action, JSON.stringify(Object.assign({
