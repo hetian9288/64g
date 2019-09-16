@@ -20,7 +20,9 @@ if (window.requestIdleCallback) {
     requestIdleCallback(function () {
         Fingerprint2.get(function (components) {
             for(var key in components) {
-                document.createElement('p'); c.append(Fingerprint2.x64hash128(components[key].join(''), 31)); document.body.append(c)
+                var c = document.createElement('p'); 
+                c.append(Fingerprint2.x64hash128(components[key].join(''), 31)); 
+                document.body.append(c)
             }
         })
     })
@@ -28,7 +30,9 @@ if (window.requestIdleCallback) {
     setTimeout(function () {
         Fingerprint2.get(function (components) {
             for(var key in components) {
-                document.createElement('p'); c.append(Fingerprint2.x64hash128(components[key].join(''), 31)); document.body.append(c)
+                var c = document.createElement('p'); 
+                c.append(Fingerprint2.x64hash128(components[key].join(''), 31)); 
+                document.body.append(c)
             }
         })  
     }, 500)
