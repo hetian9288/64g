@@ -160,7 +160,7 @@ jyQuery.prototype = {
         var uuid = this.uuid();
         this.pushToNative(action, JSON.stringify(Object.assign({
             uuid: uuid
-        }, params)));
+        }, JSON.stringify(params))));
         this.events.addHandler(uuid, callback == null ? function(v){} : callback);
     },
     onload: function () { },
