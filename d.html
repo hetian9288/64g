@@ -90,12 +90,22 @@ jyQuery.prototype = {
     __event__: function(data) {
         this.events.fire(data);
     },
+    // data 必须传入 Object {}
     pushToNative: function (action, data) {
+        if (typeof data != "object") {
+            console.error("data 值必须是 Object");
+            return ;
+        }
         if (this.isIOS) {
+            if (typeof data == "object") {
+                data = encodeURIComponent(JSON.stringify(data));
+            }
             var url = "jyObj://" + action + "?" + data;
             window.location.href = url;
         } else {
-            jyObj.manager(action, data);
+            if (typeof data == "object") {
+                jyObj.manager(action, JSON.stringify(data));
+            }
         }
     },
     // options = {
@@ -121,6 +131,10 @@ jyQuery.prototype = {
     //      "msg": "错误信息"
     // }
     ajax: function (url, method, data, options, onSuccess, onError) {
+        if (typeof params != "object") {
+            console.error("params 值必须是 Object");
+            return ;
+        }
         var uuid = this.uuid();
         this.pushToNative("ajax", JSON.stringify({
             uuid: uuid,
@@ -139,14 +153,14 @@ jyQuery.prototype = {
     },
     ajaxName: function (apiName, method, data, options, v, onSuccess, onError) {
         var uuid = this.uuid();
-        this.pushToNative("ajaxName", JSON.stringify({
+        this.pushToNative("ajaxName", {
             uuid: uuid,
             apiName: apiName,
             method: method,
             data: data,
             version: v == null ? "2.0": v,
             options: options == null ? {} : options,
-        }));
+        });
         this.events.addHandler(uuid, function(event){
             if (event.code == 200) {
                 onSuccess(event.data);
@@ -156,11 +170,16 @@ jyQuery.prototype = {
         });
     },
     // callback function(rest){};
+    // params 必须是 Object
     publicAction: function(action, params, callback) {
+        if (typeof params != "object") {
+            console.error("params 值必须是 Object");
+            return ;
+        }
         var uuid = this.uuid();
         this.pushToNative(action, JSON.stringify(Object.assign({
             uuid: uuid
-        }, JSON.stringify(params))));
+        }, params)));
         this.events.addHandler(uuid, callback == null ? function(v){} : callback);
     },
     onload: function () { },
