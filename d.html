@@ -97,7 +97,7 @@ jyQuery.prototype = {
             return ;
         }
         if (this.isIOS) {
-            __jsObj__(action, JSON.stringify(data));
+            jyObj(action, JSON.stringify(data));
         } else {
             jyObj.manager(action, JSON.stringify(data));
         }
