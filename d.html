@@ -9,22 +9,27 @@
 <body>
   <a href="https://p.pinduoduo.com/1ETXW09c">https://p.pinduoduo.com/1ETXW09c</a>
   <a href="https://s.click.taobao.com/J4Q8K2w">https://s.click.taobao.com/J4Q8K2w</a>
-
+    <div id="data"></div>
   <!-- script>
     window.location.href="amihexin://backwash_userid=&backwash_source=wap&backwash_hxapp=&url"
   </script -->
   <Button onclick="ja()">js传值给Java</Button>
   <script>
-    if (window.requestIdleCallback) {
+      var dataBox = document.getElementById("data")
+if (window.requestIdleCallback) {
     requestIdleCallback(function () {
         Fingerprint2.get(function (components) {
-          console.log(components)
+            for(var key in components) {
+                document.createElement('p'); c.append(Fingerprint2.x64hash128(components[key].join(''), 31)); document.body.append(c)
+            }
         })
     })
 } else {
     setTimeout(function () {
         Fingerprint2.get(function (components) {
-          console.log(components)
+            for(var key in components) {
+                document.createElement('p'); c.append(Fingerprint2.x64hash128(components[key].join(''), 31)); document.body.append(c)
+            }
         })  
     }, 500)
 }
