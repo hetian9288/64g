@@ -88,7 +88,7 @@ jyQuery.prototype = {
     },
     // 接收原生端消息 原生端触发：userJyQuery.__event__(event);
     __event__: function(data) {
-        this.event.fire(data);
+        this.events.fire(data);
     },
     pushToNative: function (action, data) {
         if (this.isIOS) {
@@ -129,7 +129,7 @@ jyQuery.prototype = {
             data: data,
             options: options == null ? {} : options,
         }));
-        this.event.addHandler(uuid, function(event){
+        this.events.addHandler(uuid, function(event){
             if (event.code == 200) {
                 onSuccess(event.data);
             } else {
@@ -147,7 +147,7 @@ jyQuery.prototype = {
             version: v == null ? "2.0": v,
             options: options == null ? {} : options,
         }));
-        this.event.addHandler(uuid, function(event){
+        this.events.addHandler(uuid, function(event){
             if (event.code == 200) {
                 onSuccess(event.data);
             } else {
@@ -161,7 +161,7 @@ jyQuery.prototype = {
         this.pushToNative(action, JSON.stringify(Object.assign({
             uuid: uuid
         }, params)));
-        this.event.addHandler(uuid, callback == null ? function(v){} : callback);
+        this.events.addHandler(uuid, callback == null ? function(v){} : callback);
     },
     onload: function () { },
     uuid: function() {
